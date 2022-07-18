@@ -6,7 +6,7 @@
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.my_history,target=/home/python/.my_history,type=bind,consistency=cached",
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/secret.gitconfig,target=/home/python/secret.gitconfig,type=bind,consistency=cached",
-    "source=aggregator_venv,target=${containerWorkspaceFolder}/.venv,type=volume",
+    "source=${localWorkspaceFolderBasename}_venv,target=${containerWorkspaceFolder}/.venv,type=volume",
   ],
   "containerUser": "python",
   "postCreateCommand": "chown python .venv",

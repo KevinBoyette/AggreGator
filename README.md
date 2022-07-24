@@ -14,7 +14,7 @@ Downloading transactions is in another repo...
 
 ## Usage
 
-Put a _.env_ in the project root and define these variable:
+Put a _.env_ in the project root and define these variables:
 
 - `TXN_PATH`: path to transactions directory (your data that you need to play with)
   - It's optional if you define a volume named txn where you'll have your transactions. `docker volume create txn`... But why, though?
@@ -59,7 +59,7 @@ I'm taking some inspiration from the following resources:
 - [Getting Started with Ledger](https://rolfschr.github.io/gswl-book/latest.html)
 
 I'm not too familiar with Haskell, but building "Hello World" took 10 minutes and that's far from reasonable.
-I will be using python to scrub the data and bash to invoke Ledger.
+I will be using python to scrub the data and Ledger directly.
 
 The project looks like this:
 
@@ -71,9 +71,9 @@ The project looks like this:
 
 I think it's worth pointing out some accounting ideas that I'll be using.
 
-- For stocks and cryto, I need to know which lot I'm selling. For now, I'll assume FIFO.
+- For stocks and crypto, I need to know which lot I'm selling. For now, I'll assume FIFO.
 - I'll track credit as contra assets instead of liabilities.
-- To mitigate duplicates, I'm transforming `asset <-> asset` tranfers into `asset <-> Equity:Tranfer` tranfers.
+- To mitigate duplicates, I'm transforming `asset <-> asset` tranfers into `asset <-> Equity:Tranfer` transfers.
 - Similarly, stock purchases need to go through a conversion. `$ -> ticker` becomes `$ -> Equity:Conversion $ -> Equity:Conversion ticker -> ticker`.
 
 ### Accounts

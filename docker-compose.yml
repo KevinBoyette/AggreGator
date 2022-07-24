@@ -1,13 +1,14 @@
 version: "3"
 services:
   aggregator:
-    image: aggregator
+    container_name: aggregator
+    tty: true
     build:
       context: .
       target: final
-    # volumes:
-    #   txn directory
-    #   -
+    volumes:
+      - ${TXN_PATH:-txn}:/home/python/aggregator/txn
+      - ./.env:/home/python/aggregator/.env
     networks:
       - aggregator
 
@@ -54,3 +55,6 @@ networks:
 volumes:
   grafana:
   timescale:
+
+  txn:
+    external: true

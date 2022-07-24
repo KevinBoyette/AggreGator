@@ -23,4 +23,6 @@ COPY exe/* /opt/aggregator/.venv/bin
 
 RUN useradd $USERNAME -ms /bin/bash
 USER $USERNAME
+RUN mkdir ~/aggregator
 ENV PATH="/opt/aggregator/.venv/bin:$PATH"
+WORKDIR /home/python/aggregator

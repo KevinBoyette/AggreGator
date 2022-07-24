@@ -33,6 +33,8 @@ You probably don't want to spin down everything. If you `docker compose down`, t
 So the db will need to be hydrated again and the dashboard will need re-building.
 You can just `docker compose stop` to stop the containers and `docker compose start` when you need them again.
 
+> TODO: Talk about the data directory structure
+
 ## Contributing
 
 This project currently uses `poetry`. You **probably** want to use the included _.devcontainer.json_.
@@ -63,8 +65,17 @@ I will be using python to scrub the data and Ledger directly.
 
 The project looks like this:
 
-```txt
-:o
+```mermaid
+flowchart LR
+  raw(Raw CSVs)
+  csv(Massaged CSVs)
+  tsdb[(Time Series \n DB)]
+  ledger>Ledger Journals & Reports]
+
+  raw --tranform-csv--> csv
+  raw --transform-csv-with-lots--> csv
+  csv --dump-csv-into-db--> tsdb
+  csv --ledger-cli--> ledger
 ```
 
 ## Concepts

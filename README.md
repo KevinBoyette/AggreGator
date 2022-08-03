@@ -37,19 +37,14 @@ You can just `docker compose stop` to stop the containers and `docker compose st
 
 ## Contributing
 
-This project currently uses `poetry`. You **probably** want to use the included _.devcontainer.json_.
+This project currently uses `poetry`. You **probably** want to use the included _.devcontainer/_.
 Install the dependencies with `poetry install`. Now you can run the _(WIP)_ AggreGator CLI with:
 
 ```shell
-poetry run python -m aggregator.cli
-# OR even better
-./scripts/aggregator.sh
+poetry run aggregator
 ```
 
-I tried adding stuff to poetry scripts, but it didn't work for me. So there's a _scripts/_ directory:
-
-- _scripts/test.sh_: Runs pytest. Only outputs failed tests and less than 100% coverage by default.
-- _scripts/purge.sh_: Deletes a bunch of crud that tools like to dump in the project tree. Also deletes _poetry.lock_ and everything in the virtual env for a clean install. Probably overkill tbh.
+To test, lint, etc., run `make help` for a list of targets. You can figure it out from there.
 
 ## Overview
 

@@ -13,7 +13,7 @@ services:
       - aggregator
 
   grafana:
-    image: grafana/grafana:9.0.4
+    image: grafana/grafana:9.0.6
     restart: unless-stopped
     container_name: grafana
     volumes:
@@ -35,7 +35,7 @@ services:
       - "3000:3000"
 
   timescale:
-    image: timescale/timescaledb:2.7.1-pg14
+    image: timescale/timescaledb:2.7.2-pg14
     container_name: timescale
     restart: unless-stopped
     environment:

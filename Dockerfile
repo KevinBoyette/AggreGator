@@ -14,7 +14,7 @@ RUN /home/python/.local/bin/poetry build
 RUN .venv/bin/pip install dist/*.whl
 
 
-FROM python:3.10.5-slim as final
+FROM python:3.10.6-slim as final
 
 ARG USERNAME=python
 

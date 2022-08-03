@@ -1,15 +1,25 @@
 // https://github.com/devcontainers/spec/blob/main/docs/specs/devcontainerjson-reference.md
 {
   "name": "${localWorkspaceFolderBasename}",
-  // https://github.com/SupaStuff/dockerfiles/blob/main/images/python/Dockerfile#L26-L31
-  "image": "supastuff/python:poetry",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "USERNAME": "python"
+    }
+  },
+  "containerUser": "python",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.my_history,target=/home/python/.my_history,type=bind,consistency=cached",
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/secret.gitconfig,target=/home/python/secret.gitconfig,type=bind,consistency=cached",
     "source=${localWorkspaceFolderBasename}_venv,target=${containerWorkspaceFolder}/.venv,type=volume",
+    "source=python_vscode_server,target=/home/python/.vscode-server/extensions,type=volume",
+    "source=python_vscode_server_insiders,target=/home/python/.vscode-server-insiders/extensions,type=volume",
   ],
-  "containerUser": "python",
-  "postCreateCommand": "chown python .venv",
+  "runArgs": [
+    "--name=${localWorkspaceFolderBasename}"
+  ],
   // Tool specific configurations (honestly, it should be a separate file...):
   // https://github.com/devcontainers/spec/blob/main/docs/specs/supporting-tools.md
   "customizations": {
@@ -22,11 +32,6 @@
         "ms-python.python",
         "yzhang.markdown-all-in-one",
       ],
-      // This should be supported, but it's not. Installing them isn't too slow, I guess
-      // "mounts": [
-      //   "source=vscode_server4python,target=/home/python/.vscode-server/extensions,type=volume",
-      //   "source=vscode_server_insiders4python,target=/home/python/.vscode-server-insiders/extensions,type=volume",
-      // ]
     }
   },
 }

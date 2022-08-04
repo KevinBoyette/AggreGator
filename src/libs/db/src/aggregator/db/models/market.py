@@ -1,12 +1,12 @@
+from sqlalchemy import Column, Date, Float, Integer, String
+
 from .base import Base
 
-from sqlalchemy import Column, Integer, String, Date, Float
-
-tablename = 'market'
+TABLENAME = 'market'
 
 
 class Market(Base):
-    __tablename__ = tablename
+    __tablename__ = TABLENAME
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     symbol = Column(String)
@@ -20,4 +20,4 @@ class Market(Base):
 
 
 # https://docs.timescale.com/api/latest/hypertable/create_hypertable/#optional-arguments
-hypertable = f"SELECT create_hypertable('{tablename}', 'date');"
+hypertable = f"SELECT create_hypertable('{TABLENAME}', 'date');"

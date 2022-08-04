@@ -1,39 +1,39 @@
 import re
 from operator import itemgetter
-
 from typing import TypedDict
+
 from sqlalchemy import engine_from_config
 
 
 class DbCredentials(TypedDict):
-  username: str
-  password: str
-  host: str
-  port: str
+    username: str
+    password: str
+    host: str
+    port: str
 
 
-def isIncludable(line: str) -> bool:
-  stripped = line.strip()
-  return stripped and not stripped.startswith('#')
+def is_includable(line: str) -> bool:
+    stripped = line.strip()
+    return stripped and not stripped.startswith('#')
 
 
-def getDotEnv() -> dict[str, str]:
-  with open(".env") as dotenv:
-    lines = (line.strip() for line in dotenv if isIncludable(line))
-    pairs = (re.split(r"\s*=\s*", line, 1) for line in lines)
-    return {k: v for k, v in pairs}
+def get_dot_env() -> dict[str, str]:
+    with open(".env", encoding="utf-8") as dotenv:
+        lines = (line.strip() for line in dotenv if is_includable(line))
+        pairs = (re.split(r"\s*=\s*", line, 1) for line in lines)
+        return dict(pairs)
 
 
-def getDbConfig(credentials: DbCredentials):
-  username, password, host, port = itemgetter(
-      "username", "password", "host", "port")(credentials)
-  return {
-      "sqlalchemy.url": f"postgresql://{username}:{password}@{host}:{port}/aggregator",
-      "sqlalchemy.echo": True,
-  }
+def get_db_config(credentials: DbCredentials):
+    username, password, host, port = itemgetter(
+        "username", "password", "host", "port")(credentials)
+    return {
+        "sqlalchemy.url": f"postgresql://{username}:{password}@{host}:{port}/aggregator",
+        "sqlalchemy.echo": True,
+    }
 
 
-def getDbEngine():
-  dotenv = getDotEnv()
-  config = getDbConfig(dotenv)
-  return engine_from_config(config)
+def get_db_engine():
+    dotenv = get_dot_env()
+    config = get_db_config(dotenv)
+    return engine_from_config(config)

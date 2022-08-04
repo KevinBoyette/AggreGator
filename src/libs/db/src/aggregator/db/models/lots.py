@@ -1,8 +1,8 @@
-from .base import Base
-from .asset_type import AssetType
-
-from sqlalchemy import Column, Integer, String, Date, Float, Enum
+from sqlalchemy import Column, Date, Enum, Float, Integer, String
 from sqlalchemy.orm import relationship
+
+from .asset_type import AssetType
+from .base import Base
 
 
 class Lots(Base):

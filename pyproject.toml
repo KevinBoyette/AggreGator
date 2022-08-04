@@ -1,3 +1,12 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.autopep8]
+in-place = true
+recursive = true
+aggressive = 3
+
 [tool.poetry]
 name = "AggreGator"
 version = "0.0.0"
@@ -13,6 +22,7 @@ cli = { path = "./src/apps/cli/", develop = true }
 [tool.poetry.dev-dependencies]
 autopep8 = "^1.6.0"
 flake8 = "^4.0.1"
+isort = "^5.10.1"
 pycodestyle = "^2.8.0"
 pydocstyle = "^6.1.1"
 pylint = "^2.14.3"
@@ -23,6 +33,9 @@ pytest-randomly = "^3.12.0"
 [tool.poetry.scripts]
 aggregator = "aggregator.cli:main"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.pylint.'MESSAGES CONTROL']
+# import-error: complains about relative imports... https://github.com/PyCQA/pylint/issues/3651
+# wrong-import-order: isort missed a spot... https://github.com/PyCQA/isort/issues/1497
+# too-few-public-methods: Probably need to revisit those model classes
+# docstrings: I'll do those later
+disable = "import-error, wrong-import-order, too-few-public-methods, missing-class-docstring, missing-function-docstring, missing-module-docstring"

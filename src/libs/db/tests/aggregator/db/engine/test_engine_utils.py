@@ -1,8 +1,11 @@
-import pytest
+# pylint: disable=redefined-outer-name
+# https://github.com/PyCQA/pylint/issues/6531
 from unittest import mock
-from sqlalchemy.engine.url import URL
 
-from aggregator.db.engine.engine_utils import isIncludable, getDotEnv, getDbConfig, getDbEngine
+import pytest
+from aggregator.db.engine.engine_utils import (get_db_config, get_db_engine,
+                                               get_dot_env, is_includable)
+from sqlalchemy.engine.url import URL
 
 
 @pytest.mark.parametrize("line", [
@@ -12,8 +15,8 @@ from aggregator.db.engine.engine_utils import isIncludable, getDotEnv, getDbConf
     " a=b ",
     "doesn't really matter",
 ])
-def test_isIncludable(line):
-  assert isIncludable(line)
+def test_is_includable(line):
+    assert is_includable(line)
 
 
 @pytest.mark.parametrize("line", [
@@ -23,13 +26,13 @@ def test_isIncludable(line):
     "  ",
     "\n",
 ])
-def test_not_isIncludable(line):
-  assert not isIncludable(line)
+def test_not_is_includable(line):
+    assert not is_includable(line)
 
 
 @pytest.fixture
-def dotEnvFile():
-  return """
+def dot_env_file():
+    return """
   # username=sandyCrocodile
   username=a11yGator
     # password=drowssap
@@ -41,33 +44,33 @@ def dotEnvFile():
 
 
 @pytest.fixture
-def dotEnvDict():
-  return {
-      "username": "a11yGator",
-      "password": "12345678",
-      "host": "db.server.lan",
-      "port": "5432",
-  }
+def dot_env_dict():
+    return {
+        "username": "a11yGator",
+        "password": "12345678",
+        "host": "db.server.lan",
+        "port": "5432",
+    }
 
 
-def test_getDotEnv(dotEnvFile, dotEnvDict):
-  with mock.patch("builtins.open", mock.mock_open(read_data=dotEnvFile)):
-    assert getDotEnv() == dotEnvDict
+def test_get_dot_env(dot_env_file, dot_env_dict):
+    with mock.patch("builtins.open", mock.mock_open(read_data=dot_env_file)):
+        assert get_dot_env() == dot_env_dict
 
 
-def test_getDbConfig(dotEnvDict):
-  assert getDbConfig(dotEnvDict) == {
-      "sqlalchemy.url": "postgresql://a11yGator:12345678@db.server.lan:5432/aggregator",
-      "sqlalchemy.echo": True,
-  }
+def test_get_db_config(dot_env_dict):
+    assert get_db_config(dot_env_dict) == {
+        "sqlalchemy.url": "postgresql://a11yGator:12345678@db.server.lan:5432/aggregator",
+        "sqlalchemy.echo": True,
+    }
 
 
-def test_getDbConfig_invalid():
-  with pytest.raises(KeyError):
-    getDbConfig({})
+def test_get_db_config_invalid():
+    with pytest.raises(KeyError):
+        get_db_config({})
 
 
-def test_getDbEngine(dotEnvFile):
-  with mock.patch("builtins.open", mock.mock_open(read_data=dotEnvFile)):
-    assert getDbEngine().url == URL.create("postgresql", "a11yGator",
-                                           "12345678", "db.server.lan", "5432", "aggregator")
+def test_get_db_engine(dot_env_file):
+    with mock.patch("builtins.open", mock.mock_open(read_data=dot_env_file)):
+        assert get_db_engine().url == URL.create("postgresql", "a11yGator",
+                                                 "12345678", "db.server.lan", "5432", "aggregator")

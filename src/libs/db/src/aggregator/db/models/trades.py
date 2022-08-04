@@ -1,14 +1,14 @@
-from .base import Base
-from .asset_type import AssetType
-
-from sqlalchemy import Column, Integer, String, Date, Float, Enum, ForeignKey
+from sqlalchemy import Column, Date, Enum, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-tablename = 'trades'
+from .asset_type import AssetType
+from .base import Base
+
+TABLENAME = 'trades'
 
 
 class Trades(Base):
-    __tablename__ = tablename
+    __tablename__ = TABLENAME
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     symbol = Column(String)
@@ -21,4 +21,4 @@ class Trades(Base):
 
 
 # https://docs.timescale.com/api/latest/hypertable/create_hypertable/#optional-arguments
-hypertable = f"SELECT create_hypertable('{tablename}', 'date');"
+hypertable = f"SELECT create_hypertable('{TABLENAME}', 'date');"
